@@ -21,6 +21,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -228,10 +229,10 @@ func main() {
 		vbitrate = int(bitfloat)
 	}
 
-	// construct output filename
-	arr := strings.Split(file, ".")
-	output := strings.Join(arr[0:len(arr)-1], ".")
-	output = fmt.Sprintf("%gmb.%s.mp4", *size, output)
+	// construct output filename next to the input file
+	base := filepath.Base(file)
+	name := strings.TrimSuffix(base, filepath.Ext(base))
+	output := filepath.Join(filepath.Dir(file), fmt.Sprintf("%gmb.%s.mp4", *size, name))
 
 	// beware: changing this changes the muxing overhead
 	const FPS = 24
