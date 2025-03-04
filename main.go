@@ -79,17 +79,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	destdir, err := os.Getwd()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
 	filepath := flag.Args()[0]
 	file := path.Base(filepath)
 	dir := path.Dir(filepath)
 
-	err = os.Chdir(dir)
+	err := os.Chdir(dir)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -246,7 +240,7 @@ func main() {
 	// construct output filename
 	arr := strings.Split(file, ".")
 	output := strings.Join(arr[0:len(arr)-1], ".")
-	output = fmt.Sprintf("%s/%gmb.%s.mp4", destdir, *size, output)
+	output = fmt.Sprintf("%s/%gmb.%s.mp4", dir, *size, output)
 
 	// beware: changing this changes the muxing overhead
 	const FPS = 24
